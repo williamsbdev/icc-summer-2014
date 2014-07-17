@@ -1,0 +1,4 @@
+{
+    "test_page": "index.html",
+    "launch_in_dev": ["PhantomJS"]
+}
