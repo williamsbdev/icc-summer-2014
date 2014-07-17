@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<title>Repos</title>
+<style>
+  #ember {
+      margin-top: 50px;
+      margin-left: 50px;
+  }
+</style>
+<body>
+
+<div id="ember">
+  <div id="users-section">
+    <div>
+      Find User Repos by language
+    </div>
+    <label for="users">Users</label>
+    <select id="users">
+      <option value="">Select One</option>
+    </select>
+  </div>
+  <div id="languages-section" style="display:none;">
+    <label for="languages">Languages</label>
+    <select id="languages">
+      <option value="">Select One</option>
+    </select>
+  </div>
+  <div id="repos-section" style="display:none;">
+    <div id="repos">
+    </div>
+  </div>
+</div>
+
+<script src="bower_components/jquery/dist/jquery.min.js" type="text/javascript"></script>
+<script src="bower_components/jquery-mockjax/jquery.mockjax.js" type="text/javascript"></script>
+<script src="mocks.js" type="text/javascript"></script>
+<script src="app.js" type="text/javascript"></script>
+<script type="text/javascript">
+  function module(){};
+  function test(){};
+</script>
+</body>
+</html>

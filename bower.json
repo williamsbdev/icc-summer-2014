@@ -1,0 +1,7 @@
+{
+    "name": "iccSummer2014",
+    "dependencies": {
+        "ember": "*",
+        "jquery-mockjax": "*"
+    }
+}
