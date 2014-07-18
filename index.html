@@ -22,6 +22,7 @@
       <label for="users">Users</label>
       {{view App.UserSelect
         id="users"
+        value=current_user
         content=model
         optionValuePath="content.username"
         optionLabelPath="content.name"
@@ -35,16 +36,22 @@
       <label for="languages">Languages</label>
       {{view App.LanguageSelect
         id="languages"
+        value=current_language
         content=model
         optionValuePath="content.value"
         optionLabelPath="content.name"
         prompt="Select One"
       }}
     </div>
+    {{outlet}}
   </script>
-  <script type="text/x-handlebars" data-template-name="components/jquery-code">
-    <div id="repos-section" style="display:none;">
+  <script type="text/x-handlebars" data-template-name="repos">
+    <div id="repos-section">
       <div id="repos">
+        {{#each model}}
+          <a {{bind-attr href=url}}>{{name}}</a>
+          <br />
+        {{/each}}
       </div>
     </div>
   </script>

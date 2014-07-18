@@ -2,6 +2,9 @@ module('testing our application', {
     setup: function(){
         App.setupForTesting();
         App.injectTestHelpers();
+    },
+    teardown: function(){
+        App.reset();
     }
 });
 
@@ -34,7 +37,8 @@ test('test that languages are populated when user selected', function(){
     });
 });
 
-test('test that languages are populated when user selected', function(){
+test('test that repos are populated when user and language selected', function(){
+    visit('/');
     find('#users').val('mattjmorrison').change();
     equal(find('#users').val(), 'mattjmorrison');
     andThen(function(){
@@ -42,9 +46,21 @@ test('test that languages are populated when user selected', function(){
         equal(find('#languages').val(), 'javascript');
     });
     andThen(function(){
-        var options = find('#repos a')
-        equal(options.length, 2);
-        equal(options[0].text, 'matt-javascript-one');
-        equal(options[1].text, 'matt-javascript-two');
+        var a_tags = find('#repos a')
+        equal(a_tags.length, 2);
+        equal(a_tags[0].text, 'matt-javascript-one');
+        equal(a_tags[1].text, 'matt-javascript-two');
+    });
+});
+
+test('test that deep nesting will select correct values in dropdowns', function(){
+    visit('/mattjmorrison/javascript/');
+    andThen(function(){
+        equal(find('#users').val(), 'mattjmorrison');
+        equal(find('#languages').val(), 'javascript');
+        var a_tags = find('#repos a')
+        equal(a_tags.length, 2);
+        equal(a_tags[0].text, 'matt-javascript-one');
+        equal(a_tags[1].text, 'matt-javascript-two');
     });
 });
