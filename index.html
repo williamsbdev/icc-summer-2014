@@ -11,9 +11,10 @@
 
 <div id="ember">
   <script type="text/x-handlebars" data-template-name="application">
+    {{outlet}}
     {{jquery-code}}
   </script>
-  <script type="text/x-handlebars" data-template-name="components/jquery-code">
+  <script type="text/x-handlebars" data-template-name="users">
     <div id="users-section">
       <div>
         Find User Repos by language
@@ -21,8 +22,13 @@
       <label for="users">Users</label>
       <select id="users">
         <option value="">Select One</option>
+        {{#each model}}
+          <option {{bind-attr value=username}}>{{name}}</option>
+        {{/each}}
       </select>
     </div>
+  </script>
+  <script type="text/x-handlebars" data-template-name="components/jquery-code">
     <div id="languages-section" style="display:none;">
       <label for="languages">Languages</label>
       <select id="languages">

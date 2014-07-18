@@ -6,17 +6,23 @@ module('testing our application', {
 });
 
 test('test that users are populated on page load', function(){
-    var options = find('#users option');
-    equal(options.length, 3);
-    equal(find("#users").val(), '');
-    equal(options[0].text, 'Select One');
-    equal(options[1].text, 'Matthew J Morrison');
-    equal(options[2].text, 'Toran Billups');
+    visit('/');
+    andThen(function(){
+        var options = find('#users option');
+        equal(options.length, 3);
+        equal(find("#users").val(), '');
+        equal(options[0].text, 'Select One');
+        equal(options[1].text, 'Matthew J Morrison');
+        equal(options[2].text, 'Toran Billups');
+    });
 });
 
 test('test that languages are populated when user selected', function(){
-    find('#users').val('mattjmorrison').change();
-    equal(find('#users').val(), 'mattjmorrison');
+    visit('/');
+    andThen(function(){
+        find('#users').val('mattjmorrison').change();
+        equal(find('#users').val(), 'mattjmorrison');
+    });
     andThen(function(){
         var options = find('#languages option');
         equal(options.length, 5);

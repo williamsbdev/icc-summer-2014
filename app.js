@@ -2,33 +2,52 @@ var App = Ember.Application.create({
     rootElement: "#ember"
 });
 
+App.Router.map(function(){
+    this.resource('users', {path: '/'});
+});
+
+App.UsersRoute = Ember.Route.extend({
+    model: function(){
+        return App.User.loadUsers();
+    }
+});
+
+App.User = Ember.Object.extend({
+    username: '',
+    name: ''
+}).reopenClass({
+    users: [],
+    loadUsers: function(){
+        var self = this;
+        $.ajax({
+            type: 'GET',
+            async: false,
+            url: 'https://api.github.com/orgs/dsmjs/members',
+            success: function(response){
+                for(var i = 0; i < response.length; i++){
+                    self.getUser(response[i]);
+                }
+            }
+        });
+        return this.users;
+    },
+    getUser: function(user){
+        var self = this;
+        $.ajax({
+            type: 'GET',
+            async: false,
+            url: 'https://api.github.com/users/' + user.login,
+            success: function(response){
+                var githubUser = App.User.create({username: user.login, name: response.name});
+                Ember.run(self.users, self.users.pushObject, githubUser)
+            }
+        });
+    }
+});
+
+
 App.JqueryCode = Ember.Component.create({
     initJqueryCode: function(){
-        var loadUsers = function(){
-            $.ajax({
-                type: 'GET',
-                async: false,
-                url: 'https://api.github.com/orgs/dsmjs/members',
-                success: function(response){
-                    for(var i = 0; i < response.length; i++){
-                        getUser(response[i]);
-                    }
-                }
-            });
-        };
-
-        var getUser = function(user){
-            $.ajax({
-                type: 'GET',
-                async: true,
-                url: 'https://api.github.com/users/' + user.login,
-                success: function(response){
-                    var opt = $('<option></option>').attr("value", user.login).text(response.name);
-                    $('#users').append(opt);
-                }
-            });
-        };
-
         var usersClickHandler = function(){
             $('#languages').children('option:not(:first)').remove();
             if(!this.value){
@@ -83,7 +102,6 @@ App.JqueryCode = Ember.Component.create({
             });
         };
         $(document).on('change', "#languages", languagesClickHandler)
-        loadUsers();
     }
 });
 
