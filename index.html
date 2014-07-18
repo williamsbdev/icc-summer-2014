@@ -10,28 +10,35 @@
 <body>
 
 <div id="ember">
-  <div id="users-section">
-    <div>
-      Find User Repos by language
+  <script type="text/x-handlebars" data-template-name="application">
+    {{jquery-code}}
+  </script>
+  <script type="text/x-handlebars" data-template-name="components/jquery-code">
+    <div id="users-section">
+      <div>
+        Find User Repos by language
+      </div>
+      <label for="users">Users</label>
+      <select id="users">
+        <option value="">Select One</option>
+      </select>
     </div>
-    <label for="users">Users</label>
-    <select id="users">
-      <option value="">Select One</option>
-    </select>
-  </div>
-  <div id="languages-section" style="display:none;">
-    <label for="languages">Languages</label>
-    <select id="languages">
-      <option value="">Select One</option>
-    </select>
-  </div>
-  <div id="repos-section" style="display:none;">
-    <div id="repos">
+    <div id="languages-section" style="display:none;">
+      <label for="languages">Languages</label>
+      <select id="languages">
+        <option value="">Select One</option>
+      </select>
     </div>
-  </div>
+    <div id="repos-section" style="display:none;">
+      <div id="repos">
+      </div>
+    </div>
+  </script>
 </div>
 
 <script src="bower_components/jquery/dist/jquery.min.js" type="text/javascript"></script>
+<script src="bower_components/handlebars/handlebars.min.js" type="text/javascript"></script>
+<script src="bower_components/ember/ember.js" type="text/javascript"></script>
 <script src="bower_components/jquery-mockjax/jquery.mockjax.js" type="text/javascript"></script>
 <script src="mocks.js" type="text/javascript"></script>
 <script src="app.js" type="text/javascript"></script>
