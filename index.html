@@ -20,21 +20,29 @@
         Find User Repos by language
       </div>
       <label for="users">Users</label>
-      <select id="users">
-        <option value="">Select One</option>
-        {{#each model}}
-          <option {{bind-attr value=username}}>{{name}}</option>
-        {{/each}}
-      </select>
+      {{view App.UserSelect
+        id="users"
+        content=model
+        optionValuePath="content.username"
+        optionLabelPath="content.name"
+        prompt="Select One"
+      }}
+    </div>
+    {{outlet}}
+  </script>
+  <script type="text/x-handlebars" data-template-name="languages">
+    <div id="languages-section">
+      <label for="languages">Languages</label>
+      {{view App.LanguageSelect
+        id="languages"
+        content=model
+        optionValuePath="content.value"
+        optionLabelPath="content.name"
+        prompt="Select One"
+      }}
     </div>
   </script>
   <script type="text/x-handlebars" data-template-name="components/jquery-code">
-    <div id="languages-section" style="display:none;">
-      <label for="languages">Languages</label>
-      <select id="languages">
-        <option value="">Select One</option>
-      </select>
-    </div>
     <div id="repos-section" style="display:none;">
       <div id="repos">
       </div>

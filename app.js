@@ -3,12 +3,27 @@ var App = Ember.Application.create({
 });
 
 App.Router.map(function(){
-    this.resource('users', {path: '/'});
+    this.resource('users', {path: '/'}, function(){
+        this.resource('languages', {path: ':username/'})
+    });
 });
 
 App.UsersRoute = Ember.Route.extend({
     model: function(){
         return App.User.loadUsers();
+    }
+});
+
+App.UsersController = Ember.ArrayController.extend({});
+
+App.UserSelect = Ember.Select.extend({
+    change: function(){
+        var controller = this.get('controller');
+        if(!this.get('value')){
+            controller.transitionToRoute('users');
+            return;
+        }
+        controller.transitionToRoute('languages', this.get('value'));
     }
 });
 
@@ -45,37 +60,49 @@ App.User = Ember.Object.extend({
     }
 });
 
+App.Language = Ember.Object.extend({
+    name: '',
+    value: ''
+}).reopenClass({
+    languages: [],
+    find: function(username){
+        var self = this;
+        $.ajax({
+            type: 'GET',
+            async: false,
+            url: 'https://api.github.com/users/' + username + '/repos',
+            success: function(response){
+                var repos = {};
+                for(var i = 0; i < response.length; i++){
+                    var repo = response[i];
+                    if(repo.language){
+                        var language = App.Language.create({
+                            name: repo.language,
+                            value: repo.language.toLowerCase()
+                        });
+                        repos[repo.language] = language
+                    }
+                }
+                for(var key in repos){
+                    Ember.run(self.languages, self.languages.pushObject, repos[key])
+                }
+            }
+        });
+        return this.languages;
+    }
+});
+
+App.LanguageSelect = Ember.Select.extend({});
+
+App.LanguagesRoute = Ember.Route.extend({
+    model: function(params){
+        App.Language.languages = [];
+        return App.Language.find(params.username);
+    }
+});
 
 App.JqueryCode = Ember.Component.create({
     initJqueryCode: function(){
-        var usersClickHandler = function(){
-            $('#languages').children('option:not(:first)').remove();
-            if(!this.value){
-                $('#languages-section').hide();
-                return;
-            }
-            $('#languages-section').show();
-            $.ajax({
-                type: 'GET',
-                async: false,
-                url: 'https://api.github.com/users/' + this.value + '/repos',
-                success: function(response){
-                    var repos = {};
-                    for(var i = 0; i < response.length; i++){
-                        var repo = response[i];
-                        if(repo.language){
-                            repos[repo.language.toLowerCase()] = repo.language;
-                        }
-                    }
-                    for(var key in repos){
-                        var opt = $('<option></option>').attr("value", key).text(repos[key]);
-                        $('#languages').append(opt);
-                    }
-                }
-            });
-        };
-        $(document).on('change', "#users", usersClickHandler)
-
         var languagesClickHandler = function(){
             $('#repos').children().remove()
             if(!this.value){
