@@ -7,7 +7,7 @@ Iowa Code Camp presentation for Summer 2014
 Getting Started
 ===============
 
-    git clone https://github.com/williamsbdev/iccSummer2014.git
+    git clone https://bitbucket.org/williamsbdev/icc-summer-2014.git
 
     npm install
 
